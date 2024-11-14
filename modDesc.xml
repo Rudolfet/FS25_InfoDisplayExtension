@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="92">
+	<author>Achimobil</author>
+	<version>1.0.0.0</version>
+	<title>
+		<de>Info Display Erweiterung</de>
+		<en>Info Display Extension</en>
+		<pl>Rozszerzone Informacje</pl>
+		<ru>Дополнительная Информация</ru>
+	</title>
+	<description>
+		<de><![CDATA[Ein kleiner Mod zur Erweiterung der Anzeigen.
+
+Erweitert die Info Hud Anzeigen von
+- Silos
+- Produktionen (inkl. der Anzeige im Produktionsmenü)
+- Tierställen
+- Misthaufen
+- Bäumen
+- Fahrzeuge und Anbaugeräte
+- Fügt, wo möglich, die Einheiten der Zahlen hinzu, da nicht alles in Litern ist.
+
+Upload auf anderen Seiten nur durch mich selbst, Verlinkung nur mit Original-Downloadlink. KEIN Ersatzlink!
+Das Verändern oder erneutes hochladen, ob ganz oder in Teilen, ist nicht gestattet!
+
+Fehler und Anregungen gerne auf <a href="https://github.com/Achimobil/FS25_InfoDisplayExtension">GitHub</a>.
+]]></de>
+		<en><![CDATA[A small mod to extend the displays.
+
+Extends the Info Hud displays of
+- silos
+- Productions (incl. the display in the production menu)
+- animal sheeds
+- dung heaps
+- trees
+- Vehicles and attachments
+- Adds units of numbers where possible as not everything is in litres.
+
+Upload on other sites only by myself, linking only with original download link. NO substitute link!
+Modifying and re-uploading in whole or in part is not allowed!
+
+Bugs and suggestions welcome on <a href="https://github.com/Achimobil/FS25_InfoDisplayExtension">GitHub</a>.
+]]></en>
+	</description>
+	
+	<iconFilename>icon_InfoDisplayExtension.dds</iconFilename>
+	
+	<multiplayer supported="true"/>
+	
+	<extraSourceFiles>
+		<sourceFile filename="InfoDisplayExtension.lua"/>
+	</extraSourceFiles>
+	
+	<l10n filenamePrefix="translations/translation"/>
+</modDesc>
