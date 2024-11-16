@@ -521,7 +521,7 @@ function PlaceableHusbandryAnimals.setMoreInfos(clusters, isHorse)
 				end;
 				if cluster.age < subType.reproductionMinAgeMonth then
 					-- Rate für 
-					local minAgeFactor = MathUtil.clamp(cluster.age / subType.reproductionMinAgeMonth, 0, 1) * 100
+					local minAgeFactor = math.clamp(cluster.age / subType.reproductionMinAgeMonth, 0, 1) * 100
 					if minAgeFactor > highestBeforeReproduction then highestBeforeReproduction = minAgeFactor;end;
 					if lowestBeforeReproduction == nil then lowestBeforeReproduction = minAgeFactor;end;
 					if minAgeFactor < lowestBeforeReproduction then lowestBeforeReproduction = minAgeFactor;end;
