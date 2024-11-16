@@ -13,9 +13,6 @@ No copy and use in own mods allowed.
 Das verändern und wiederöffentlichen, auch in Teilen, ist untersagt und wird abgemahnt.
 ]]
 
-	-- print("infoTriggerFillTypesAndLevels");
-	-- DebugUtil.printTableRecursively(spec.infoTriggerFillTypesAndLevels,"_",0,2);
-
 InfoDisplayExtension = {}
 
 InfoDisplayExtension.metadata = {
@@ -25,6 +22,20 @@ InfoDisplayExtension.metadata = {
 	info = "Das verändern und wiederöffentlichen, auch in Teilen, ist untersagt und wird abgemahnt."
 };
 InfoDisplayExtension.modDir = g_currentModDirectory;
+
+function InfoDisplayExtension.DebugTable(text, myTable, maxDepth)
+	if myTable == nil then
+		print("InfoDisplayExtensionDebug: " .. text .. " is nil");
+	else
+		print("InfoDisplayExtensionDebug: " .. text)
+		DebugUtil.printTableRecursively(myTable,"_",0, maxDepth or 2);
+	end
+end
+
+-- Beispiel: InfoDisplayExtension.DebugText("Alter: %s", age)
+function InfoDisplayExtension.DebugText(text, ...)
+	print("InfoDisplayExtensionDebug: " .. string.format(text, ...));
+end
 
 function InfoDisplayExtension:formatVolume(liters, precision, unit, fillTypeName)
 	unit = unit ~= "" and (unit == false and "" or unit) or nil
@@ -446,17 +457,6 @@ function InfoDisplayExtension:updateInfoPlaceableHusbandryAnimals(_, superFunc, 
 			PlaceableHusbandryAnimals.AddInfoText(infoTable, "fitnessRange", string.format("%d - %d %%", moreInfos.lowestFitness, moreInfos.highestFitness))
 		end
 	end
-	
-	-- for title, moreInfo in pairs(moreInfos) do
-		-- table.insert(infoTable,
-			-- {
-				-- title = title, 
-				-- text = tostring(moreInfo)
-			-- }
-		-- )
-	-- end
--- print("moreInfos")
--- DebugUtil.printTableRecursively(moreInfos,"_",0,2)
 end
 PlaceableHusbandryAnimals.updateInfo = Utils.overwrittenFunction(PlaceableHusbandryAnimals.updateInfo, InfoDisplayExtension.updateInfoPlaceableHusbandryAnimals)
 
@@ -839,24 +839,30 @@ Weitere informationen zu Bäumen anzeigen.]]
 		
 		if foundTree ~= nil then
 			local treeTypeDesc = g_treePlantManager:getTreeTypeDescFromIndex(foundTree.treeType)
+			-- InfoDisplayExtension.DebugTable("foundTree", foundTree);
+			-- InfoDisplayExtension.DebugTable("treeTypeDesc", treeTypeDesc);
 			
+			local fullGrown = true;
 			local growStateText = g_i18n:getText("infohud_fullGrown");
-			if foundTree.growthState ~= 1 then
+			if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true then
 				local numOfGrowStates = table.getn(treeTypeDesc.treeFilenames);
-				local growthStateI = math.floor(foundTree.growthState * (numOfGrowStates - 1)) + 1
+				local growthStateI = math.floor(foundTree.growthStateI * (numOfGrowStates - 1)) + 1
 				growStateText = tostring(growthStateI) .. " / " .. tostring(numOfGrowStates);
+				fullGrown = false;
 			end
 			box:addLine(g_i18n:getText("infohud_growthState"), growStateText)
 			
 			-- alter in Stunden mit Angabe des maximal alters
 			local ageText = g_i18n:getText("infohud_fullGrown");
-			if foundTree.growthState ~= 1 then
+			if foundTree.growthStateI ~= 1 then
 				local totalGrowHours = treeTypeDesc.growthTimeHours / g_currentMission.environment.timeAdjustment;
-				local ageInHours = totalGrowHours * foundTree.growthState;
+				local ageInHours = totalGrowHours * foundTree.growthStateI;
 				ageText = g_i18n:formatNumber(ageInHours) .. " / " .. g_i18n:formatNumber(totalGrowHours) .. "h";
 			end
 			
-			box:addLine(g_i18n:getText("infohud_ageInHours"), ageText)
+			if not fullGrown then
+				box:addLine(g_i18n:getText("infohud_ageInHours"), ageText)
+			end
 		end
 	end
 
