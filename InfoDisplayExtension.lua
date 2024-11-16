@@ -14,6 +14,7 @@ Das verändern und wiederöffentlichen, auch in Teilen, ist untersagt und wird a
 ]]
 
 InfoDisplayExtension = {}
+InfoDisplayExtension.Debug = false;
 
 InfoDisplayExtension.metadata = {
 	title = "InfoDisplayExtension",
@@ -24,6 +25,7 @@ InfoDisplayExtension.metadata = {
 InfoDisplayExtension.modDir = g_currentModDirectory;
 
 function InfoDisplayExtension.DebugTable(text, myTable, maxDepth)
+	if not InfoDisplayExtension.Debug then return end
 	if myTable == nil then
 		print("InfoDisplayExtensionDebug: " .. text .. " is nil");
 	else
@@ -34,6 +36,7 @@ end
 
 -- Beispiel: InfoDisplayExtension.DebugText("Alter: %s", age)
 function InfoDisplayExtension.DebugText(text, ...)
+	if not InfoDisplayExtension.Debug then return end
 	print("InfoDisplayExtensionDebug: " .. string.format(text, ...));
 end
 
