@@ -858,7 +858,7 @@ Weitere informationen zu Bäumen anzeigen.]]
 			local ageText = g_i18n:getText("infohud_fullGrown");
 			if foundTree.growthStateI ~= 1 then
 				local numOfGrowStates = table.getn(treeTypeDesc.stages);
-				local totalGrowHours = (treeTypeDesc.growthTimeHours * numOfGrowStates) / g_currentMission.environment.timeAdjustment;
+				local totalGrowHours = (treeTypeDesc.growthTimeHours * (numOfGrowStates - 1)) / g_currentMission.environment.timeAdjustment;
 				local hoursNow = ((g_currentMission.environment.currentDay - 1) * 24 ) + g_currentMission.environment.currentHour;
 				local hoursLeftInThisStage = foundTree.nextGrowthTargetHour - hoursNow;
 				local hoursInPreviousStages = (foundTree.growthStateI) * treeTypeDesc.growthTimeHours;
