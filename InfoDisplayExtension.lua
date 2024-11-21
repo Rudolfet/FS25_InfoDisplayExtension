@@ -842,15 +842,14 @@ Weitere informationen zu Bäumen anzeigen.]]
 		
 		if foundTree ~= nil then
 			local treeTypeDesc = g_treePlantManager:getTreeTypeDescFromIndex(foundTree.treeType)
-			-- InfoDisplayExtension.DebugTable("foundTree", foundTree);
-			-- InfoDisplayExtension.DebugTable("treeTypeDesc", treeTypeDesc);
+			InfoDisplayExtension.DebugTable("foundTree", foundTree);
+			InfoDisplayExtension.DebugTable("treeTypeDesc", treeTypeDesc);
 			
 			local fullGrown = true;
 			local growStateText = g_i18n:getText("infohud_fullGrown");
 			if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true then
-				local numOfGrowStates = table.getn(treeTypeDesc.treeFilenames);
-				local growthStateI = math.floor(foundTree.growthStateI * (numOfGrowStates - 1)) + 1
-				growStateText = tostring(growthStateI) .. " / " .. tostring(numOfGrowStates);
+				local numOfGrowStates = table.getn(treeTypeDesc.stages);
+				growStateText = tostring(foundTree.growthStateI) .. " / " .. tostring(numOfGrowStates);
 				fullGrown = false;
 			end
 			box:addLine(g_i18n:getText("infohud_growthState"), growStateText)
@@ -858,8 +857,13 @@ Weitere informationen zu Bäumen anzeigen.]]
 			-- alter in Stunden mit Angabe des maximal alters
 			local ageText = g_i18n:getText("infohud_fullGrown");
 			if foundTree.growthStateI ~= 1 then
-				local totalGrowHours = treeTypeDesc.growthTimeHours / g_currentMission.environment.timeAdjustment;
-				local ageInHours = totalGrowHours * foundTree.growthStateI;
+				local numOfGrowStates = table.getn(treeTypeDesc.stages);
+				local totalGrowHours = (treeTypeDesc.growthTimeHours * numOfGrowStates) / g_currentMission.environment.timeAdjustment;
+				local hoursNow = ((g_currentMission.environment.currentDay - 1) * 24 ) + g_currentMission.environment.currentHour;
+				local hoursLeftInThisStage = foundTree.nextGrowthTargetHour - hoursNow;
+				local hoursInPreviousStages = (foundTree.growthStateI) * treeTypeDesc.growthTimeHours;
+				local ageInHours = hoursInPreviousStages - hoursLeftInThisStage;
+				InfoDisplayExtension.DebugText("hoursNow: %s - currentDay: %s - currentHour: %s - nextGrowthTargetHour: %s - hoursLeftInThisStage: %s - hoursInPreviousStages: %s", hoursNow, g_currentMission.environment.currentDay, g_currentMission.environment.currentHour, foundTree.nextGrowthTargetHour, hoursLeftInThisStage, hoursInPreviousStages)
 				ageText = g_i18n:formatNumber(ageInHours) .. " / " .. g_i18n:formatNumber(totalGrowHours) .. "h";
 			end
 			
