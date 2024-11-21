@@ -16,9 +16,9 @@
 		<text name="infohud_missing" text="Faltando"/>
 		<text name="infohud_remaingTime" text="Tempo restante"/>
 		<text name="infoDisplayExtension_currentPower" text="Potência:"/>
-		<text name="infohud_Input" text="Input"/>
-		<text name="infohud_both" text="Input and Output"/>
-		<text name="infohud_Output" text="Output"/>
+		<text name="infohud_Input" text="Entrada"/>
+		<text name="infohud_both" text="Entrada e saída"/>
+		<text name="infohud_Output" text="Saída"/>
 		<!-- Animal Texts -->
 		<text name="infoDisplayExtension_animals_health" text="Saúde"/>
 		<text name="infoDisplayExtension_animals_healthRange" text="Saúde"/>
@@ -35,6 +35,6 @@
 		<text name="infoDisplayExtension_animals_ridingRange" text="Cavalgado"/>
 		<text name="infoDisplayExtension_animals_fitness" text="Fitness"/>
 		<text name="infoDisplayExtension_animals_fitnessRange" text="Fitness"/>
-		<text name="infoDisplayExtension_grazingFoodBuffer" text="Grazing Buffer"/>
+		<text name="infoDisplayExtension_grazingFoodBuffer" text="Buffer de pastagem"/>
 	</texts>
 </l10n>

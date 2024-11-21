@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="92">
 	<author>Achimobil</author>
-	<version>1.0.0.2</version>
+	<version>1.0.0.3</version>
 	<title>
 		<de>Info Display Erweiterung</de>
 		<en>Info Display Extension</en>
@@ -28,6 +28,7 @@ Fehler und Anregungen gerne auf <a href="https://github.com/Achimobil/FS25_InfoD
 Changelog
 1.0.0.1 - Fehler in Berechnungen für Baum Wachstum korrigiert
 1.0.0.2 - Baum Altersberechnung angepasst
+1.0.0.3 - BR Translation von Myiamoto86 verbessert
 
 ]]></de>
 		<en><![CDATA[A small mod to extend the displays.
