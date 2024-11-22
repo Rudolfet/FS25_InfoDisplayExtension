@@ -1,7 +1,7 @@
 # FS25_InfoDisplayExtension
 
 # ModHub
-comming soon
+https://www.farming-simulator.com/mod.php?mod_id=303731
 
 
 # General
