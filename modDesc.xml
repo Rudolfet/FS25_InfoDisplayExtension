@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="92">
+<modDesc descVersion="93">
 	<author>Achimobil</author>
-	<version>1.0.0.5</version>
+	<version>1.0.1.1</version>
 	<title>
 		<de>Info Display Erweiterung</de>
 		<en>Info Display Extension</en>
@@ -13,7 +13,7 @@
 
 Erweitert die Info Hud Anzeigen von
 - Silos
-- Produktionen (inkl. der Anzeige im Produktionsmenü)
+- Produktionen
 - Tierställen
 - Misthaufen
 - Bäumen
@@ -26,18 +26,19 @@ Das Verändern oder erneutes hochladen, ob ganz oder in Teilen, ist nicht gestat
 Fehler und Anregungen gerne auf <a href="https://github.com/Achimobil/FS25_InfoDisplayExtension">GitHub</a>.
 
 Changelog
-1.0.0.1 - Fehler in Berechnungen für Baum Wachstum korrigiert
-1.0.0.2 - Baum Altersberechnung angepasst
-1.0.0.3 - BR Translation von Myiamoto86 verbessert
-1.0.0.4 - TR Translation von BeReal86 hinzugefügt
-1.0.0.5 - Baum Berechnungsfehler bei voll ausgewachsenen behoebn
+1.0.1.1 - Verbesserungen DE übersetzungen
 
+1.0.1.0
+- Lua Fehler in Berechnungen für selbstgepflanzte Bäume korrigiert
+- Altersberechnung für Bäume korrigiert
+- Übersetzungeskorrekturen eingefügt
+- Türkische Übersetzungen hinzugefügt
 ]]></de>
 		<en><![CDATA[A small mod to extend the displays.
 
 Extends the Info Hud displays of
 - silos
-- Productions (incl. the display in the production menu)
+- Productions
 - animal sheeds
 - dung heaps
 - trees
@@ -48,6 +49,13 @@ Uploading to sites other than ModHub is prohibited and therefore illegal, linkin
 Modifying and re-uploading in whole or in part is not allowed!
 
 Bugs and suggestions welcome on <a href="https://github.com/Achimobil/FS25_InfoDisplayExtension">GitHub</a>.
+
+Changelog
+1.0.1.0
+- Lua error in calculations for self-planted trees corrected
+- Corrected age calculation for trees
+- Added translation corrections
+- Turkish translations added
 ]]></en>
 	</description>
 	
