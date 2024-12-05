@@ -3,7 +3,7 @@
 	<translationContributors>Achimobil</translationContributors>
 	<texts>
 		<text name="infoDisplayExtension_TOTAL_CAPACITY_TITLE" text="Lagerkapazität"/>
-		<text name="infoDisplayExtension_USED_CAPACITY" text="Benutzte Kapazität"/>
+		<text name="infoDisplayExtension_USED_CAPACITY" text="Genutzte Kapazität"/>
 		<text name="infoDisplayExtension_TOTAL_CAPACITY" text="Gesamtkapazität"/>
 		<text name="infoDisplayExtension_MORE_ITEMS" text="weitere"/>
 		<text name="infoDisplayExtension_MANURE_HEAP_CONNECTED" text="Verbunden mit"/>
@@ -22,8 +22,8 @@
 		<!-- Animal Texts -->
 		<text name="infoDisplayExtension_animals_health" text="Gesundheit"/>
 		<text name="infoDisplayExtension_animals_healthRange" text="Gesundheit"/>
-		<text name="infoDisplayExtension_animals_duration" text="Reproduktionzeit"/>
-		<text name="infoDisplayExtension_animals_durationRange" text="Reproduktionzeit"/>
+		<text name="infoDisplayExtension_animals_duration" text="Reproduktionszeit"/>
+		<text name="infoDisplayExtension_animals_durationRange" text="Reproduktionszeit"/>
 		<text name="infoDisplayExtension_animals_reproduction" text="Reproduktionsrate"/>
 		<text name="infoDisplayExtension_animals_reproductionRange" text="Reproduktionsrate"/>
 		<text name="infoDisplayExtension_animals_beforeReproduction" text="Geschlechtsreife"/>
