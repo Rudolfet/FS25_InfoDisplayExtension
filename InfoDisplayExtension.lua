@@ -14,7 +14,7 @@ Das verändern und wiederöffentlichen, auch in Teilen, ist untersagt und wird a
 ]]
 
 InfoDisplayExtension = {}
-InfoDisplayExtension.Debug = false;
+InfoDisplayExtension.Debug = true;
 
 InfoDisplayExtension.metadata = {
 	title = "InfoDisplayExtension",
@@ -1133,5 +1133,24 @@ function InfoDisplayExtension:loadMap(name)
 		end
 	end
 end
+
+function InfoDisplayExtension.PlayerHUDUpdaterFieldAddField(self, fieldInfo, box)
+
+	local fruitTypeIndex = fieldInfo.fruitTypeIndex;
+	local growthState = fieldInfo.growthState;
+    
+	if fruitTypeIndex ~= FruitType.UNKNOWN then
+		local fruitTypeDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex);
+        local numGrowthStates = fruitTypeDesc.numGrowthStates;
+        
+        if fruitTypeDesc:getIsGrowing(growthState) then
+            box:addLine(g_i18n:getText("ui_map_growth"), string.format("%s / %s", growthState, fruitTypeDesc.numGrowthStates))
+        end
+	end
+end
+
+PlayerHUDUpdater.fieldAddField = Utils.appendedFunction(PlayerHUDUpdater.fieldAddField, InfoDisplayExtension.PlayerHUDUpdaterFieldAddField)
+
+
 
 addModEventListener(InfoDisplayExtension)
