@@ -862,7 +862,7 @@ Weitere informationen zu Bäumen anzeigen.]]
 
             -- alter in Stunden mit Angabe des maximal alters
             local ageText = g_i18n:getText("infohud_fullGrown");
-            if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true then
+            if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true and foundTree.nextGrowthTargetHour ~= nilthen
                 local numOfGrowStates = table.getn(treeTypeDesc.stages);
                 local totalGrowHours = (treeTypeDesc.growthTimeHours * (numOfGrowStates - 1)) / g_currentMission.environment.timeAdjustment;
                 local hoursNow = ((g_currentMission.environment.currentDay - 1) * 24 ) + g_currentMission.environment.currentHour;

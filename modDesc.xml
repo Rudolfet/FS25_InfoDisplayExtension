@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="93">
-	<author>Achimobil</author>
-	<version>1.0.1.3</version>
-	<title>
-		<de>Info Display Erweiterung</de>
-		<en>Info Display Extension</en>
-		<pl>Rozszerzone Informacje</pl>
-		<ru>Дополнительная Информация</ru>
-	</title>
-	<description>
-		<de><![CDATA[Ein kleiner Mod zur Erweiterung der Anzeigen.
+    <author>Achimobil</author>
+    <version>1.0.1.4</version>
+    <title>
+        <de>Info Display Erweiterung</de>
+        <en>Info Display Extension</en>
+        <pl>Rozszerzone Informacje</pl>
+        <ru>Дополнительная Информация</ru>
+    </title>
+    <description>
+        <de><![CDATA[Ein kleiner Mod zur Erweiterung der Anzeigen.
 
 Erweitert die Info Hud Anzeigen von
 - Silos
@@ -29,6 +29,7 @@ Changelog
 1.0.1.1 - Verbesserungen DE übersetzungen
 1.0.1.2 - Wachstumsphase und max Wachtum anzeigen
 1.0.1.3 - Übersetzungen in pt von Inoque71 hinzugefügt
+1.0.1.4 - Lua fehler bei Bäumen letzte Wachstumsphase behoben
 
 1.0.1.0
 - Lua Fehler in Berechnungen für selbstgepflanzte Bäume korrigiert
@@ -36,7 +37,7 @@ Changelog
 - Übersetzungeskorrekturen eingefügt
 - Türkische Übersetzungen hinzugefügt
 ]]></de>
-		<en><![CDATA[A small mod to extend the displays.
+        <en><![CDATA[A small mod to extend the displays.
 
 Extends the Info Hud displays of
 - silos
@@ -59,15 +60,15 @@ Changelog
 - Added translation corrections
 - Turkish translations added
 ]]></en>
-	</description>
-	
-	<iconFilename>icon_InfoDisplayExtension.dds</iconFilename>
-	
-	<multiplayer supported="true"/>
-	
-	<extraSourceFiles>
-		<sourceFile filename="InfoDisplayExtension.lua"/>
-	</extraSourceFiles>
-	
-	<l10n filenamePrefix="translations/translation"/>
+    </description>
+
+    <iconFilename>icon_InfoDisplayExtension.dds</iconFilename>
+
+    <multiplayer supported="true"/>
+
+    <extraSourceFiles>
+        <sourceFile filename="InfoDisplayExtension.lua"/>
+    </extraSourceFiles>
+
+    <l10n filenamePrefix="translations/translation"/>
 </modDesc>
