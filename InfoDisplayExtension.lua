@@ -38,7 +38,7 @@ function InfoDisplayExtension.DebugTable(text, myTable, maxDepth)
     end
 end
 
---- Print the text to the log. Example: InfoDisplayExtension.DebugText("Alter: %s", age)
+---Print the text to the log. Example: InfoDisplayExtension.DebugText("Alter: %s", age)
 -- @param string text the text to print formated
 -- @param any ... format parameter
 function InfoDisplayExtension.DebugText(text, ...)
@@ -46,17 +46,22 @@ function InfoDisplayExtension.DebugText(text, ...)
     print("InfoDisplayExtensionDebug: " .. string.format(text, ...));
 end
 
-function InfoDisplayExtension:formatVolume(liters, precision, unit, fillTypeName)
+---format a volume
+-- @param float liters amount to format
+-- @param integer precision how many decimals
+-- @param string unit which unit should be used
+-- @return string the formated value
+function InfoDisplayExtension:formatVolume(liters, precision, unit)
     unit = unit ~= "" and (unit == false and "" or unit) or nil
 
     return g_i18n:formatVolume(liters, precision, unit)
 end
 
 function InfoDisplayExtension:formatCapacity(liters, capacity, precision, unit, fillTypeName)
-    return self:formatVolume(liters, precision, false, fillTypeName) .. " / " .. self:formatVolume(capacity, precision, unit, fillTypeName);
+    return self:formatVolume(liters, precision, false) .. " / " .. self:formatVolume(capacity, precision, unit);
 end
 
-function InfoDisplayExtension:updateInfo(_, superFunc, infoTable)
+function InfoDisplayExtension:updateInfoPlaceableSilo(_, superFunc, infoTable)
     superFunc(self, infoTable)
 
     local spec = self.spec_silo
@@ -164,7 +169,7 @@ function InfoDisplayExtension:updateInfo(_, superFunc, infoTable)
 
     -- print("test")
 end
-PlaceableSilo.updateInfo = Utils.overwrittenFunction(PlaceableSilo.updateInfo, InfoDisplayExtension.updateInfo)
+PlaceableSilo.updateInfo = Utils.overwrittenFunction(PlaceableSilo.updateInfo, InfoDisplayExtension.updateInfoPlaceableSilo)
 
 function InfoDisplayExtension:updateInfoProductionPoint(superFunc, infoTable)
     local owningFarm = g_farmManager:getFarmById(self:getOwnerFarmId())
@@ -194,7 +199,7 @@ function InfoDisplayExtension:updateInfoProductionPoint(superFunc, infoTable)
         table.insert(infoTable, self.infoTables.noActiveProd)
     end
 
-    local fillType, fillLevel, fillLevelCapacity = nil
+    local fillTypeIndex, fillLevel, fillLevelCapacity = nil
     local fillTypesDisplayed = false
 
     --table.insert(infoTable, self.infoTables.storage)
@@ -205,23 +210,23 @@ function InfoDisplayExtension:updateInfoProductionPoint(superFunc, infoTable)
 
     local titleAdded = false;
     for i = 1, #self.inputFillTypeIdsArray do
-        fillType = self.inputFillTypeIdsArray[i]
+        fillTypeIndex = self.inputFillTypeIdsArray[i]
 
         local isOutput = false;
         for i = 1, #self.outputFillTypeIdsArray do
-            fillType2 = self.outputFillTypeIdsArray[i]
-            if fillType == fillType2 then
-                inputOutputType[fillType] = true
+            local fillType2 = self.outputFillTypeIdsArray[i]
+            if fillTypeIndex == fillType2 then
+                inputOutputType[fillTypeIndex] = true
                 isOutput = true;
             end
         end
 
-        fillLevel = self:getFillLevel(fillType)
-        fillLevelCapacity = self:getCapacity(fillType)
+        fillLevel = self:getFillLevel(fillTypeIndex)
+        fillLevelCapacity = self:getCapacity(fillTypeIndex)
 
         if fillLevel > 1 then
             fillTypesDisplayed = true
-            local fillType = g_fillTypeManager:getFillTypeByIndex(fillType);
+            local fillType = g_fillTypeManager:getFillTypeByIndex(fillTypeIndex);
             if isOutput then
                 table.insert(inputOutputTypeInfo, {
                     title = fillType.title,
@@ -253,19 +258,19 @@ function InfoDisplayExtension:updateInfoProductionPoint(superFunc, infoTable)
             titleAdded = true;
         end
 
-        inputOutputTypeInfoItem = inputOutputTypeInfo[i]
+        local inputOutputTypeInfoItem = inputOutputTypeInfo[i]
         table.insert(infoTable, inputOutputTypeInfoItem)
     end
 
     titleAdded = false;
     for i = 1, #self.outputFillTypeIdsArray do
-        fillType = self.outputFillTypeIdsArray[i]
-        fillLevel = self:getFillLevel(fillType)
-        fillLevelCapacity = self:getCapacity(fillType)
+        fillTypeIndex = self.outputFillTypeIdsArray[i]
+        fillLevel = self:getFillLevel(fillTypeIndex)
+        fillLevelCapacity = self:getCapacity(fillTypeIndex)
 
-        if fillLevel > 1 and inputOutputType[fillType] == nil then
+        if fillLevel > 1 and inputOutputType[fillTypeIndex] == nil then
             fillTypesDisplayed = true
-            local fillType = g_fillTypeManager:getFillTypeByIndex(fillType);
+            local fillType = g_fillTypeManager:getFillTypeByIndex(fillTypeIndex);
 
             if not titleAdded then
                 table.insert(infoTable, {
@@ -796,7 +801,7 @@ Weitere informationen zu Bäumen anzeigen.]]
         return
     end
 
-    local sizeX, sizeY, sizeZ, numConvexes, numAttachments = getSplitShapeStats(splitShape)
+    local sizeX, sizeY, sizeZ, _, _ = getSplitShapeStats(splitShape)
     local splitType = g_splitShapeManager:getSplitTypeByIndex(splitTypeId)
     local splitTypeName = splitType and splitType.title
     local length = math.max(sizeX, sizeY, sizeZ)
@@ -854,7 +859,7 @@ Weitere informationen zu Bäumen anzeigen.]]
             local fullGrown = true;
             local growStateText = g_i18n:getText("infohud_fullGrown");
             if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true then
-                local numOfGrowStates = table.getn(treeTypeDesc.stages);
+                local numOfGrowStates = #treeTypeDesc.stages;
                 growStateText = tostring(foundTree.growthStateI) .. " / " .. tostring(numOfGrowStates);
                 fullGrown = false;
             end
@@ -863,7 +868,7 @@ Weitere informationen zu Bäumen anzeigen.]]
             -- alter in Stunden mit Angabe des maximal alters
             local ageText = g_i18n:getText("infohud_fullGrown");
             if foundTree.growthStateI ~= 1 and foundTree.isGrowing == true and foundTree.nextGrowthTargetHour ~= nil then
-                local numOfGrowStates = table.getn(treeTypeDesc.stages);
+                local numOfGrowStates = #treeTypeDesc.stages;
                 local totalGrowHours = (treeTypeDesc.growthTimeHours * (numOfGrowStates - 1)) / g_currentMission.environment.timeAdjustment;
                 local hoursNow = ((g_currentMission.environment.currentDay - 1) * 24 ) + g_currentMission.environment.currentHour;
                 local hoursLeftInThisStage = foundTree.nextGrowthTargetHour - hoursNow;
@@ -992,154 +997,10 @@ end
 
 AnimalItemStock.new = Utils.overwrittenFunction(AnimalItemStock.new, AnimalItemStockExtension.new)
 
-
--- DLC stuff
-function InfoDisplayExtension:updateInfoRollercoasterStateBuilding(superFunc, infoTable)
-    table.insert(infoTable, self.infoBoxRequiredGoods)
-
-    local remainingSeconds = 0;
-
-    for i, input in ipairs(self.inputs) do
-        if input.remainingAmount > 0 then
-            local fillLevel = self.rollercoaster:getFillLevel(input.fillType.index);
-            local missing = math.max(0, input.remainingAmount - fillLevel)
-            if missing ~= 0 then
-                input.infoTableEntry.text = InfoDisplayExtension:formatVolume(input.remainingAmount, 0) .. " (" .. g_i18n:getText("infohud_missing") .. " " .. InfoDisplayExtension:formatVolume(missing, 0) .. ")";
-            end
-
-            -- restlaufzeit bis state ende
-            if input.remainingAmount > 0 then
-                local remainSecondsHere = input.remainingAmount / input.usagePerSecond;
-                remainingSeconds = math.max(remainingSeconds, remainSecondsHere)
-            end
-
-            table.insert(infoTable, input.infoTableEntry)
-        end
-    end
-
-    table.insert(infoTable, {
-        title = g_i18n:getText("infohud_remaingTime"),
-        text = g_i18n:formatMinutes(remainingSeconds / 60)
-    })
-end
-
-function InfoDisplayExtension:updateInfoBoatyardStateBuilding(superFunc, infoTable)
-    table.insert(infoTable, self.infoBoxRequiredGoods)
-
-    local remainingSeconds = 0;
-
-    for i, input in ipairs(self.inputs) do
-        if input.remainingAmount > 0 then
-            local fillLevel = self.boatyard:getFillLevel(input.fillType.index);
-            local missing = math.max(0, input.remainingAmount - fillLevel)
-            if missing ~= 0 then
-                input.infoTableEntry.text = InfoDisplayExtension:formatVolume(input.remainingAmount, 0) .. " (" .. g_i18n:getText("infohud_missing") .. " " .. InfoDisplayExtension:formatVolume(missing, 0) .. ")";
-            end
-
-            -- restlaufzeit bis state ende
-            if input.remainingAmount > 0 then
-                local remainSecondsHere = input.remainingAmount / input.usagePerSecond;
-                remainingSeconds = math.max(remainingSeconds, remainSecondsHere)
-            end
-
-            table.insert(infoTable, input.infoTableEntry)
-        end
-    end
-
-    table.insert(infoTable, {
-        title = g_i18n:getText("infohud_remaingTime"),
-        text = g_i18n:formatMinutes(remainingSeconds / 60)
-    })
-end
-
-function InfoDisplayExtension:updateUI(_)
---[[ original aus Patch 1.5 überschrieben
-Grund:
-Die Anzeige der einzelnen Balken gerücksichtig als einziges nicht ob es ein feld auf dem Farmland gibt.]]
-    if self.mapFrame ~= nil then
-        local farmId = g_currentMission:getFarmId()
-        local totalScore = self:getTotalScore(farmId)
-        local percentage = self:getTotalScore(farmId) / 100
-
-        self.mapFrame.envScoreBarNumber:setText(string.format("%d", MathUtil.round(totalScore,1)))
-        self.mapFrame.envScoreBarDynamic:setSize(self.mapFrame.envScoreBarStatic.size[1] * percentage)
-
-        local uvs = GuiOverlay.getOverlayUVs(self.mapFrame.envScoreBarStatic.overlay, true)
-
-        self.mapFrame.envScoreBarDynamic:setImageUVs(true, uvs[1], uvs[2], uvs[3], uvs[4], (uvs[5] - uvs[1]) * percentage + uvs[1], uvs[6], (uvs[7] - uvs[3]) * percentage + uvs[3], uvs[8])
-
-        local indicatorX = self.mapFrame.envScoreBarStatic.position[1] + self.mapFrame.envScoreBarStatic.size[1] * percentage
-
-        self.mapFrame.envScoreBarIndicator:setPosition(indicatorX - self.mapFrame.envScoreBarIndicator.size[1] * 0.5)
-        self.mapFrame.envScoreBarNumber:setPosition(indicatorX - self.mapFrame.envScoreBarNumber.size[1] * 0.5)
-
-        local sumFarmlandSize = 0
-        for farmlandId, _farmId in pairs(g_farmlandManager.farmlandMapping) do
-            if _farmId == farmId then
-                local farmland = g_farmlandManager:getFarmlandById(farmlandId)
-
-                if farmland ~= nil and farmland.totalFieldArea ~= nil and farmland.totalFieldArea > 0.01 then
-                    sumFarmlandSize = sumFarmlandSize + farmland.totalFieldArea
-                end
-            end
-        end	
-
-        for i = 1, #self.scoreValues do
-            local scoreValue = self.scoreValues[i]
-
-            if self.mapFrame.envScoreDistributionText[i] ~= nil then
-                local score = 0
-
-                if scoreValue.object ~= nil then
-                    local numFarmlands = 0
-
-                    for farmlandId, _farmId in pairs(g_farmlandManager.farmlandMapping) do
-                        if _farmId == farmId then
-                            local farmland = g_farmlandManager:getFarmlandById(farmlandId)
-
-                            if farmland ~= nil and farmland.totalFieldArea ~= nil and farmland.totalFieldArea > 0.01 then
-                                score = score + scoreValue.object:getScore(farmlandId) * farmland.totalFieldArea / sumFarmlandSize
-                                numFarmlands = numFarmlands + 1
-                            end
-                        end
-                    end
-                end
-
-                self.mapFrame.envScoreDistributionText[i]:setText(scoreValue.name)
-                self.mapFrame.envScoreDistributionValue[i]:setText(string.format("%.1f", MathUtil.round(score * scoreValue.maxScore, 1)))
-                self.mapFrame.envScoreDistributionBar[i]:setSize(self.mapFrame.envScoreDistributionBarBackground[i].size[1] * score)
-            end
-        end
-
-        local factor = MathUtil.round(self:getSellPriceFactor(farmId) * 100)
-        local text = factor >= 1 and self.infoTextPos or factor <= -1 and self.infoTextNeg or self.infoTextNone
-
-        self.mapFrame.envScoreInfoText:setText(string.format(text, math.abs(factor)))
-    end
-end
-
-function InfoDisplayExtension:loadMap(name)
-    -- hier alles rein, was erst nach dem laden aller mods und der map geladen ausgetauscht werden kann
-    if g_modIsLoaded["FS22_precisionFarming"] then
-        FS22_precisionFarming.EnvironmentalScore.updateUI = Utils.overwrittenFunction(FS22_precisionFarming.EnvironmentalScore.updateUI, InfoDisplayExtension.updateUI);
-    end
-
-    -- prüfen ob dlc aktiv
-    if g_modIsLoaded["pdlc_forestryPack"] then
-        pdlc_forestryPack.RollercoasterStateBuilding.updateInfo = Utils.overwrittenFunction(pdlc_forestryPack.RollercoasterStateBuilding.updateInfo, InfoDisplayExtension.updateInfoRollercoasterStateBuilding)
-        pdlc_forestryPack.BoatyardStateBuilding.updateInfo = Utils.overwrittenFunction(pdlc_forestryPack.BoatyardStateBuilding.updateInfo, InfoDisplayExtension.updateInfoBoatyardStateBuilding)
-    end
-
-    local mods = g_modManager:getActiveMods(FS22_A_ProductionRevamp);
-    local revampversion = ""
-
-    for index, activemod in pairs(mods) do
-        if activemod.title == "Production Revamp" then
-          revampversion = activemod.version
-        end
-    end
-end
-
+---append to PlayerHUDUpdater fieldAddField to add more information
+-- @param table self
+-- @param table fieldInfo
+-- @param table box
 function InfoDisplayExtension.PlayerHUDUpdaterFieldAddField(self, fieldInfo, box)
 
     local fruitTypeIndex = fieldInfo.fruitTypeIndex;
@@ -1147,7 +1008,6 @@ function InfoDisplayExtension.PlayerHUDUpdaterFieldAddField(self, fieldInfo, box
 
     if fruitTypeIndex ~= FruitType.UNKNOWN then
         local fruitTypeDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex);
-        local numGrowthStates = fruitTypeDesc.numGrowthStates;
 
         if fruitTypeDesc:getIsGrowing(growthState) then
             box:addLine(g_i18n:getText("ui_map_growth"), string.format("%s / %s", growthState, fruitTypeDesc.numGrowthStates))
