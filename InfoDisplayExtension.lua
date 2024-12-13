@@ -936,20 +936,34 @@ function InfoDisplayExtension:WearableShowInfo(superFunc, box)
 end
 Wearable.showInfo = Utils.appendedFunction(Wearable.showInfo, InfoDisplayExtension.WearableShowInfo)
 
-function InfoDisplayExtension:showInfo(box)
+---append to Vehicle showInfo to add more information
+-- @param table box
+function InfoDisplayExtension:showInfoVehicle(box)
     if self.ideHasPower == nil and self.isDeleted == false then
 
-        local powerConfig = Motorized.loadSpecValuePowerConfig(self.xmlFile)
+        local powerConfig = Motorized.loadSpecValuePowerConfig(self.xmlFile);
 
+        -- set to sero to load it only one time
         self.ideHasPower = 0;
 
         if powerConfig ~= nil then
             for configName, config in pairs(self.configurations) do
-                local configPower = powerConfig[configName][config]
+                local configPower = powerConfig[configName][config];
 
                 if configPower ~= nil then
-                    self.ideHasPower = configPower
+                    self.ideHasPower = configPower;
                 end
+            end
+        end
+
+--         InfoDisplayExtension.DebugTable("showInfoVehicle", self)
+
+        self.ideCategoryNames = {};
+        local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
+        if storeItem ~= nil then
+            for _, categoryName in pairs(storeItem.categoryNames) do
+                local category = g_storeManager:getCategoryByName(categoryName)
+                table.insert(self.ideCategoryNames, category.title)
             end
         end
     end
@@ -959,8 +973,14 @@ function InfoDisplayExtension:showInfo(box)
         local neededPower = string.format(g_i18n:getText("shop_neededPowerValue"), MathUtil.round(kw), MathUtil.round(hp));
         box:addLine(g_i18n:getText("infoDisplayExtension_currentPower"), neededPower)
     end
+
+    if #self.ideCategoryNames ~= 0 then
+        for _, categoryName in pairs(self.ideCategoryNames) do
+            box:addLine(g_i18n:getText("infoDisplayExtension_category"), categoryName)
+        end
+    end
 end
-Vehicle.showInfo = Utils.appendedFunction(Vehicle.showInfo, InfoDisplayExtension.showInfo)
+Vehicle.showInfo = Utils.appendedFunction(Vehicle.showInfo, InfoDisplayExtension.showInfoVehicle)
 
 function InfoDisplayExtension:WashableShowInfo(superFunc, box)
     -- print(string.format("InfoDisplayExtension:WashableShowInfo(%s, %s)", superFunc, box));
