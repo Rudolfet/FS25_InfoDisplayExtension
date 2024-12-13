@@ -974,6 +974,8 @@ function InfoDisplayExtension:showInfoVehicle(box)
         box:addLine(g_i18n:getText("infoDisplayExtension_currentPower"), neededPower)
     end
 
+    box:addLine(g_i18n:getText("infohud_mass"), string.format("%1.2f t\n", self:getTotalMass()))
+
     if #self.ideCategoryNames ~= 0 then
         for _, categoryName in pairs(self.ideCategoryNames) do
             box:addLine(g_i18n:getText("infoDisplayExtension_category"), categoryName)

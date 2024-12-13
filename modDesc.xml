@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="94">
     <author>Achimobil</author>
-    <version>1.0.1.6</version>
+    <version>1.0.1.7</version>
     <title>
         <de>Info Display Erweiterung</de>
         <en>Info Display Extension</en>
@@ -31,6 +31,8 @@ Changelog
 1.0.1.3 - Übersetzungen in pt von Inoque71 hinzugefügt
 1.0.1.4 - Lua fehler bei Bäumen letzte Wachstumsphase behoben
 1.0.1.5 - typo fixed
+1.0.1.6 - Fahrzeuge zeigen jetzt Shop Kategorie an
+1.0.1.7 - Fahrzeuge zeigen jetzt aktuelles Gewicht an
 
 1.0.1.0
 - Lua Fehler in Berechnungen für selbstgepflanzte Bäume korrigiert
